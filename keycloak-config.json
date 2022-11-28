@@ -1,6 +1,8 @@
 {
   "id": "0b8e160a-e12a-42ef-ba55-4221d33a50fb",
   "realm": "Keycloak-angular-connection",
+  "displayName": "",
+  "displayNameHtml": "",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -28,7 +30,7 @@
   "enabled": true,
   "sslRequired": "external",
   "registrationAllowed": true,
-  "registrationEmailAsUsername": true,
+  "registrationEmailAsUsername": false,
   "rememberMe": true,
   "verifyEmail": true,
   "loginWithEmailAllowed": true,
@@ -488,6 +490,27 @@
   "webAuthnPolicyPasswordlessCreateTimeout": 0,
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
+  "users": [
+    {
+      "id": "4e20048a-f405-45bc-8214-50852dac5aa0",
+      "createdTimestamp": 1669115930428,
+      "username": "service-account-kc-spring-boot",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "serviceAccountClientId": "kc-spring-boot",
+      "disableableCredentialTypes": [],
+      "requiredActions": [
+        "VERIFY_EMAIL"
+      ],
+      "realmRoles": [
+        "default-roles-keycloak-angular-connection",
+        "administrator"
+      ],
+      "notBefore": 0,
+      "groups": []
+    }
+  ],
   "scopeMappings": [
     {
       "clientScope": "offline_access",
@@ -792,18 +815,19 @@
       "clientId": "kc-spring-boot",
       "name": "",
       "description": "",
-      "rootUrl": "http://localhost:8040",
-      "adminUrl": "http://localhost:8040",
+      "rootUrl": "http://localhost:8050",
+      "adminUrl": "http://localhost:8050",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": true,
       "clientAuthenticatorType": "client-secret",
+      "secret": "**********",
       "redirectUris": [
-        "http://localhost:8040/*"
+        "http://localhost:8050/*"
       ],
       "webOrigins": [
-        "http://localhost:8040"
+        "http://localhost:8050"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -811,21 +835,71 @@
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
       "frontchannelLogout": true,
       "protocol": "openid-connect",
       "attributes": {
+        "client.secret.creation.time": "1669115930",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "use.refresh.tokens": "true",
+        "tls-client-certificate-bound-access-tokens": "false",
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "+",
+        "client_credentials.use_refresh_token": "false",
+        "acr.loa.map": "{}",
+        "require.pushed.authorization.requests": "false",
         "display.on.consent.screen": "false",
-        "oauth2.device.authorization.grant.enabled": "false",
-        "backchannel.logout.revoke.offline.tokens": "false"
+        "token.response.type.bearer.lower-case": "false"
       },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "fd04ad91-1e10-4962-9a03-d70eef8db22f",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "6ca77ec2-a64e-499c-a170-21c92102fb81",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "7c64daf1-1786-4af4-be65-94d77fb3d304",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "acr",
@@ -1611,7 +1685,7 @@
     ],
     "org.keycloak.userprofile.UserProfileProvider": [
       {
-        "id": "95b16ddc-9f89-4b30-828c-9348f01f18bc",
+        "id": "560e66f8-338f-48c5-9fa4-48a6ec48d5d3",
         "providerId": "declarative-user-profile",
         "subComponents": {},
         "config": {}
@@ -1665,6 +1739,29 @@
         "config": {
           "priority": [
             "100"
+          ]
+        }
+      },
+      {
+        "id": "69683746-b3a8-40fb-9311-ba0fe86ae562",
+        "name": "rsa-generated",
+        "providerId": "rsa-generated",
+        "subComponents": {},
+        "config": {
+          "keySize": [
+            "2048"
+          ],
+          "active": [
+            "true"
+          ],
+          "priority": [
+            "0"
+          ],
+          "enabled": [
+            "true"
+          ],
+          "algorithm": [
+            "RS256"
           ]
         }
       }
@@ -2360,23 +2457,50 @@
   "dockerAuthenticationFlow": "docker auth",
   "attributes": {
     "cibaBackchannelTokenDeliveryMode": "poll",
-    "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",
-    "oauth2DeviceCodeLifespan": "600",
     "clientOfflineSessionMaxLifespan": "0",
     "oauth2DevicePollingInterval": "5",
     "clientSessionIdleTimeout": "0",
+    "clientOfflineSessionIdleTimeout": "0",
+    "cibaInterval": "5",
+    "cibaExpiresIn": "120",
+    "oauth2DeviceCodeLifespan": "600",
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",
-    "clientOfflineSessionIdleTimeout": "0",
-    "cibaInterval": "5"
+    "frontendUrl": "",
+    "acr.loa.map": "[]"
   },
   "keycloakVersion": "19.0.3",
-  "userManagedAccessAllowed": false,
+  "userManagedAccessAllowed": true,
   "clientProfiles": {
     "profiles": []
   },
   "clientPolicies": {
-    "policies": []
+    "policies": [
+      {
+        "name": "client-access-type",
+        "description": "",
+        "enabled": true,
+        "conditions": [],
+        "profiles": []
+      },
+      {
+        "name": "Weekly client secret rotation policy",
+        "description": "Enables secret rotation behavior for confidential clients\n",
+        "enabled": true,
+        "conditions": [
+          {
+            "condition": "client-access-type",
+            "configuration": {
+              "is-negative-logic": false,
+              "type": [
+                "confidential"
+              ]
+            }
+          }
+        ],
+        "profiles": []
+      }
+    ]
   }
 }
