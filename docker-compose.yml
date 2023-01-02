@@ -37,7 +37,31 @@ services:
       networks:
         - backend
       command:
-        - start-dev  
+        - start-dev
+  springboot:
+      build: ./../kc-spring-boot
+      volumes:
+        - /data/springboot-app  
+      ports: 
+        - 8050:8050
+      networks:
+        - backend  
+  angular-crm:
+      build: ./../kc-crm
+      ports:
+        - 5000:5000
+      volumes:
+        - /app/kc-crm
+      networks:
+          - backend      
+  angular-sea:
+      build: ./../kc-angular
+      ports:
+        - 4200:4200
+      volumes:
+        - /app/kc-sea
+      networks:
+          - backend
 networks:
    backend:  
       driver: bridge              
