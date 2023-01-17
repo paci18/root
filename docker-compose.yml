@@ -20,6 +20,7 @@ services:
    
   keycloak:
       image: quay.io/keycloak/keycloak:20.0.2
+      hostname: keycloak
       environment:
         DB_VENDOR: MYSQL
         DB_ADDR: mysql
@@ -28,8 +29,6 @@ services:
         DB_PASSWORD: password
         KEYCLOAK_ADMIN: admin
         KEYCLOAK_ADMIN_PASSWORD: admin
-        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
-        #JDBC_PARAMS: "connectTimeout=30000"
       ports:
         - 8080:8080
       depends_on:
@@ -44,6 +43,8 @@ services:
         - /data/springboot-app  
       ports: 
         - 8050:8050
+      depends_on:
+        - keycloak  
       networks:
         - backend  
   angular-crm:
@@ -55,7 +56,7 @@ services:
       networks:
           - backend      
   angular-sea:
-      build: ./../kc-angular
+      build: ./../kc-sea
       ports:
         - 4200:4200
       volumes:
